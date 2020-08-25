@@ -13,7 +13,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if 'hello there' in message.content.lower():
+    if 'hellothere' in ''.join(message.content.lower().split()):
         if client.state == 'text':
             await message.channel.send('General Kenobi')
         else:
