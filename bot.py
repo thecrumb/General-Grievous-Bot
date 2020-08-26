@@ -5,14 +5,12 @@ from discord.ext import commands
 from config import token
 
 def get_prefix(client, message):
-    with open('prefixes.json', 'r') as f:
-        prefixes = json.load(f)
+    with open('guilds.json', 'r') as f:
+        guilds = json.load(f)
 
-    return prefixes[str(message.guild.id)]
+    return guilds[str(message.guild.id)][0]
 
 client = commands.Bot(command_prefix = get_prefix)
-
-client.state = 'text'
 
 @client.event
 async def on_ready():
@@ -21,7 +19,10 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if 'hellothere' in ''.join(message.content.lower().split()):
-        if client.state == 'text':
+        with open('guilds.json', 'r') as f:
+            guilds = json.load(f)
+
+        if guilds[str(message.guild.id)][1] == 'text':
             await message.channel.send('General Kenobi')
         else:
             await message.channel.send('https://gfycat.com/freshgleamingfulmar')
@@ -29,33 +30,33 @@ async def on_message(message):
 
 @client.event
 async def on_guild_join(guild):
-    with open('prefixes.json', 'r') as f:
-        prefixes = json.load(f)
+    with open('guilds.json', 'r') as f:
+        guilds = json.load(f)
 
-    prefixes[str(guild.id)] = '.'
+    guilds[str(guild.id)] = ['.', 'text']
 
-    with open('prefixes.json', 'w') as f:
-        json.dump(prefixes, f, indent=4)
+    with open('guilds.json', 'w') as f:
+        json.dump(guilds, f, indent=4)
 
 @client.event
 async def on_guild_remove(guild):
-    with open('prefixes.json', 'r') as f:
-        prefixes = json.load(f)
+    with open('guilds.json', 'r') as f:
+        guilds = json.load(f)
 
-    prefixes.pop(str(guild.id)) # FIXME use del or remove instead
+    del guilds[str(guild.id)]
 
-    with open('prefixes.json', 'w') as f:
-        json.dump(prefixes, f, indent=4)
+    with open('guilds.json', 'w') as f:
+        json.dump(guilds, f, indent=4)
 
 @client.command()
 async def changeprefix(ctx, prefix):
-    with open('prefixes.json', 'r') as f:
-        prefixes = json.load(f)
+    with open('guilds.json', 'r') as f:
+        guilds = json.load(f)
 
-    prefixes[str(ctx.guild.id)] = prefix
+    guilds[str(ctx.guild.id)][0] = prefix
 
-    with open('prefixes.json', 'w') as f:
-        json.dump(prefixes, f, indent=4)
+    with open('guilds.json', 'w') as f:
+        json.dump(guilds, f, indent=4)
 
     await ctx.send(f'Prefix changed to: {prefix}')
 
@@ -68,8 +69,16 @@ async def mode(ctx, medium=None):
     if medium not in (None, 'text', 'gif'):
         await ctx.send('Please enter a valid mode.')
         return
+
+    with open('guilds.json', 'r') as f:
+        guilds = json.load(f)
+
     if medium != None:
-        client.state = medium
-    await ctx.send(f'Current mode: {client.state}')
+        guilds[str(ctx.guild.id)][1] = medium
+
+        with open('guilds.json', 'w') as f:
+            json.dump(guilds, f, indent=4)
+
+    await ctx.send(f'Current mode: {guilds[str(ctx.guild.id)][1]}')
 
 client.run(token)
