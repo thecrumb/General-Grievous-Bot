@@ -21,6 +21,10 @@ async def on_message(message):
     await client.process_commands(message)
 
 @client.command()
+async def ping(ctx):
+    await ctx.send(f'Pong! {round(client.latency * 1000)}ms')
+
+@client.command()
 async def mode(ctx, medium=None):
     if medium not in (None, 'text', 'gif'):
         await ctx.send('Please enter a valid mode.')
