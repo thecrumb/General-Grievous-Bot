@@ -15,11 +15,17 @@ class Info(commands.Cog):
 
     @commands.command()
     async def invite(self, ctx):
+        """Sends the invite link for this bot"""
         embed = discord.Embed(
             title = 'Invite Link',
             description = 'Add General Grievous to another server!',
         )
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def ping(self, ctx):
+        """Checks the bot's response time to Discord"""
+        await ctx.send(f'Pong! {round(self.bot.latency * 1000)}ms')
 
 def setup(bot):
     bot.add_cog(Info(bot))

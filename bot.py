@@ -15,6 +15,7 @@ bot = commands.Bot(command_prefix = get_prefix)
 
 @bot.event
 async def on_ready():
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Star Wars: Revenge of the Sith"))
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)

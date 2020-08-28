@@ -19,6 +19,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def mode(self, ctx, medium=None):
+        """Changes between text and gif mode"""
         if medium not in (None, 'text', 'gif'):
             await ctx.send('Please enter a valid mode.')
             return
@@ -33,10 +34,6 @@ class Fun(commands.Cog):
                 json.dump(guilds, f, indent=4)
 
         await ctx.send(f'Current mode: {guilds[str(ctx.guild.id)][1]}')
-
-    @commands.command()
-    async def ping(self, ctx):
-        await ctx.send(f'Pong! {round(self.bot.latency * 1000)}ms')
 
 def setup(bot):
     bot.add_cog(Fun(bot))
