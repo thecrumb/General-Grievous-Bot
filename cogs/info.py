@@ -18,6 +18,7 @@ class Info(commands.Cog):
         """Sends the invite link for this bot"""
         embed = discord.Embed(
             title = 'Invite Link',
+            url = 'https://www.google.com/',
             description = 'Add General Grievous to another server!',
         )
         await ctx.send(embed=embed)
