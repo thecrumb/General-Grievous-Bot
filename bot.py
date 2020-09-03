@@ -12,6 +12,7 @@ def get_prefix(bot, message):
     return guilds[str(message.guild.id)][0]
 
 bot = commands.Bot(command_prefix = get_prefix)
+bot.remove_command('help')
 
 @bot.event
 async def on_ready():
