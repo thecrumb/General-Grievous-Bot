@@ -2,6 +2,7 @@ import discord
 import json
 from discord.ext import commands
 
+
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -15,7 +16,8 @@ class Fun(commands.Cog):
             if guilds[str(message.guild.id)][1] == 'text':
                 await message.channel.send('General Kenobi')
             else:
-                await message.channel.send('https://gfycat.com/freshgleamingfulmar')
+                await message.channel.send(
+                    'https://gfycat.com/freshgleamingfulmar')
 
     @commands.command()
     async def mode(self, ctx, medium=None):
@@ -27,7 +29,7 @@ class Fun(commands.Cog):
         with open('guilds.json', 'r') as f:
             guilds = json.load(f)
 
-        if medium != None:
+        if medium:
             guilds[str(ctx.guild.id)][1] = medium
 
             with open('guilds.json', 'w') as f:
@@ -36,7 +38,9 @@ class Fun(commands.Cog):
         await ctx.send(f'Current mode: {guilds[str(ctx.guild.id)][1]}')
 
         if not medium:
-            await ctx.send('Type the `mode` command + `text` or `gif` to change the mode')
+            await ctx.send(
+                'Type the `mode` command + `text` or `gif` to change the mode')
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
